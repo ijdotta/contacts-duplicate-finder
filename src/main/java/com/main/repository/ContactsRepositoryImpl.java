@@ -1,15 +1,21 @@
 package com.main.repository;
 
+import com.fasterxml.jackson.dataformat.csv.CsvMapper;
+import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.main.entities.Contact;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.extern.java.Log;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
+@Log
 @RequiredArgsConstructor
 public class ContactsRepositoryImpl implements ContactsRepository {
 
@@ -24,28 +30,48 @@ public class ContactsRepositoryImpl implements ContactsRepository {
         }
     }
 
+    @Getter @Setter
+    private static class ContactModel {
+        private String contactID;
+        private String name;
+        private String name1;
+        private String email;
+        private Integer postalZip;
+        private String address;
+    }
+
     private List<Contact> readContacts() {
-        try (BufferedReader reader = new BufferedReader(new FileReader(csvPath))) {
-            return reader.lines()
+        CsvMapper mapper = new CsvMapper();
+        CsvSchema schema = CsvSchema.emptySchema()
+                .withHeader()
+                .withColumnSeparator(',')
+                .withQuoteChar('"')
+                .withLineSeparator("\n");
+
+        try (FileReader reader = new FileReader(csvPath)) {
+            return mapper.readerFor(ContactModel.class)
+                    .with(schema)
+                    .readValues(reader)
+                    .readAll()
+                    .stream()
+                    .map(ContactModel.class::cast)
                     .map(this::mapToContact)
                     .toList();
-        } catch (Exception e) {
-            throw new RuntimeException("Error reading contacts", e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
     @Contract("_ -> new")
     @NotNull
-    private Contact mapToContact(@NotNull String csvLine) {
-        // csv format: id,name,lastname,email,zipcode,address
-        String[] fields = csvLine.split(",");
+    private Contact mapToContact(@NotNull ContactModel model) {
         return new Contact(
-                Integer.parseInt(fields[0]),
-                fields[1],
-                fields[2],
-                fields[3],
-                fields[4].isEmpty() ? null : Integer.parseInt(fields[4]),
-                fields[5]
+                Integer.parseInt(model.contactID),
+                model.name.isEmpty() ? null : model.name,
+                model.name1.isEmpty() ? null : model.name1,
+                model.email.isEmpty() ? null : model.email,
+                model.postalZip,
+                model.address.isEmpty() ? null : model.address
         );
     }
 }
