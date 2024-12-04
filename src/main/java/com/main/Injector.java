@@ -14,7 +14,7 @@ public class Injector {
         static final Injector INSTANCE = new Injector();
     }
 
-    public static Injector getInjector() {
+    public static Injector getInstance() {
         return Holder.INSTANCE;
     }
 
