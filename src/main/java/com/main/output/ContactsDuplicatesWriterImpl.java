@@ -16,6 +16,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Writes duplicates to a file.
+ */
 @Log
 @RequiredArgsConstructor
 public class ContactsDuplicatesWriterImpl implements ContactsDuplicatesWriter {
