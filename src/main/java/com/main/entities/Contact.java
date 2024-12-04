@@ -1,10 +1,12 @@
 package com.main.entities;
 
+import org.jetbrains.annotations.Nullable;
+
 public record Contact(
         int id,
-        String name,
-        String lastname,
-        String email,
-        Integer zipcode,
-        String address
+        @Nullable String name,
+        @Nullable String lastname,
+        @Nullable String email,
+        @Nullable Integer zipcode,
+        @Nullable String address
 ) { }
