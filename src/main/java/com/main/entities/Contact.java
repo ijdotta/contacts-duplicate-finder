@@ -1,4 +1,4 @@
-package com.example.entities;
+package com.main.entities;
 
 public record Contact(
         int id,
