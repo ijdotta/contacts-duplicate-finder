@@ -40,8 +40,8 @@ class ContactsMatcherImplTest {
 
     @Test
     void testCalculateMatch_lowAccuracy_similarFullNameAndSimilarFullAddress() {
-        Contact reference = new Contact(1, null, null, "john.doe@example.com", 12345, "123 Main St");
-        Contact candidate = new Contact(2, null, null, "jane.smith@example.com", 12345, "123 Main Street");
+        Contact reference = new Contact(1, "John", null, "john.doe@example.com", 12345, "123 Main St");
+        Contact candidate = new Contact(2, "J", null, "jane.smith@example.com", 12345, "987 Main Street");
         assertEquals(Accuracy.LOW, matcher.calculateMatch(reference, candidate));
     }
 

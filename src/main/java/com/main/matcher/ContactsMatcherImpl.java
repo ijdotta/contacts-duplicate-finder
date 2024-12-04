@@ -16,14 +16,10 @@ public class ContactsMatcherImpl implements ContactsMatcher {
         this.candidate = candidate;
 
         if (sameId() || sameEmail()) return Accuracy.HIGH;
-        if (sameFullName() && similarFullAddress()) return Accuracy.MEDIUM;
+        if (similarFullName() && sameAddress()) return Accuracy.MEDIUM;
         if (similarFullName() && similarFullAddress()) return Accuracy.LOW;
 
         return null;
-    }
-
-    private boolean sameFullName() {
-        return sameName() && sameLastName();
     }
 
     private boolean similarFullName() {
@@ -38,11 +34,6 @@ public class ContactsMatcherImpl implements ContactsMatcher {
         return reference.id() == candidate.id();
     }
 
-    private boolean sameName() {
-        if (reference.name() == null || candidate.name() == null) return false;
-        return reference.name().equalsIgnoreCase(candidate.name());
-    }
-
     private boolean similarName() {
         if (reference.name() == null && candidate.name() == null) return true;
         if (reference.name() == null || candidate.name() == null) return false;
@@ -53,11 +44,6 @@ public class ContactsMatcherImpl implements ContactsMatcher {
         if (reference.lastname() == null && candidate.lastname() == null) return true;
         if (reference.lastname() == null || candidate.lastname() == null) return false;
         return reference.lastname().startsWith(candidate.lastname()) || candidate.lastname().startsWith(reference.lastname());
-    }
-
-    private boolean sameLastName() {
-        if (reference.lastname() == null || candidate.lastname() == null) return false;
-        return reference.lastname().equalsIgnoreCase(candidate.lastname());
     }
 
     private boolean sameEmail() {
@@ -71,6 +57,8 @@ public class ContactsMatcherImpl implements ContactsMatcher {
 
     private boolean sameAddress() {
         if (reference.address() == null || candidate.address() == null) return false;
-        return reference.address().equalsIgnoreCase(candidate.address());
+        String referenceAddress = reference.address().replace("Street", "St").toLowerCase();
+        String candidateAddress = candidate.address().replace("Street", "St").toLowerCase();
+        return referenceAddress.equals(candidateAddress);
     }
 }
