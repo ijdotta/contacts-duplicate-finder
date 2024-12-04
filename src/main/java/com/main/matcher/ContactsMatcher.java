@@ -2,6 +2,7 @@ package com.main.matcher;
 
 import com.main.entities.Accuracy;
 import com.main.entities.Contact;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -15,5 +16,5 @@ public interface ContactsMatcher {
      * @param candidate the candidate contact
      * @return the accuracy of the match or null if they don't match
      */
-    @Nullable Accuracy calculateMatch(Contact reference, Contact candidate);
+    @Nullable Accuracy calculateMatch(@NotNull Contact reference, @NotNull Contact candidate);
 }
