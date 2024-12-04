@@ -18,7 +18,7 @@ public class Injector {
         return Holder.INSTANCE;
     }
 
-    private static final String FILE_PATH = "src/main/resources/contacts.txt";
+    private static final String FILE_PATH = "src/main/resources/contacts.csv";
     private final ContactsRepository repository = new ContactsRepositoryImpl(FILE_PATH);
     private final ContactsMatcher matcher = new ContactsMatcherImpl();
     @Getter private final DuplicatesContactsFinder duplicatesContactsFinder = new DuplicatesContactsFinderImpl(repository, matcher);
