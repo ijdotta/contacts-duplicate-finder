@@ -30,10 +30,6 @@ public class ContactsMatcherImpl implements ContactsMatcher {
         return similarName() && similarLastname();
     }
 
-    private boolean sameFullAddress() {
-        return sameZipCode() && sameAddress();
-    }
-
     private boolean similarFullAddress() {
         return sameZipCode() || sameAddress();
     }
