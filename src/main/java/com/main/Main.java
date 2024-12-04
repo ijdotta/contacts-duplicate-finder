@@ -1,7 +1,12 @@
 package com.main;
 
+import com.main.entities.Match;
+
+import java.util.List;
+
 public class Main {
     public static void main(String[] args) {
-        Injector.getInstance().getDuplicatesContactsFinder().findDuplicates().forEach(System.out::println);
+        List<Match> duplicates = Injector.getInstance().getDuplicatesContactsFinder().findDuplicates();
+        Injector.getInstance().getContactsDuplicatesWriter().writeDuplicates(duplicates);
     }
 }
